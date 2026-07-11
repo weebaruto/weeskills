@@ -1,0 +1,64 @@
+{
+  "skill_name": "90-in-90-blog",
+  "evals": [
+    {
+      "id": 0,
+      "name": "found-object-vinyl-with-image-and-link",
+      "prompt": "Right, new post. Was at a car boot sale in the village on Sunday, freezing, barely anyone there, and in a damp cardboard box under a table I found an original Blue Note pressing of Lee Morgan's The Sidewinder. 50p. FIFTY PENCE. Bloke had no idea what he had. Got home, cleaned it up, dropped the needle and it just... filled the room, that warm crackle, nothing like the algorithm shoving 'recommended for you' at me all week. Nobody served it up. I went and found it. Link the Discogs entry https://www.discogs.com/release/1379837 . I've got a photo of it on the turntable at evals/files/sidewinder.jpg. Make it about how the good stuff you have to go and dig for, it doesn't come to you in a feed.",
+      "expected_output": "A polished blog/YYYY-MM-DD-slug.md in Bobby's voice, built around the found record, with the Discogs link dropped inline, the image copied into static/img and referenced with centred /weewebsite/img/ markup, a truncate marker after the teaser, and a short kicker that recasts the 'you have to dig for it' idea.",
+      "files": ["evals/files/sidewinder.jpg"],
+      "assertions": [
+        {"text": "Front matter contains title, authors: [bobby], and hide_table_of_contents: false"},
+        {"text": "Contains exactly one <!-- truncate --> marker, placed after the opening teaser paragraph"},
+        {"text": "Filename follows the blog/YYYY-MM-DD-slug.md convention with a valid date"},
+        {"text": "Body contains no Markdown headings (##) and no bullet or numbered lists"},
+        {"text": "Word count is roughly 300-800 (a 2-3 min read)"},
+        {"text": "Ends on a short standalone kicker line (<= ~12 words) that recasts the theme rather than restating it"},
+        {"text": "Uses two or fewer em-dashes (avoids the AI em-dash tell)"},
+        {"text": "Contains no 'it's not X, it's Y' or 'not just... but' cliche construction"},
+        {"text": "Includes an inline Markdown link to the provided Discogs URL"},
+        {"text": "References the image with centred markup whose src starts with /weewebsite/img/ and includes descriptive alt text, and the image file was copied into static/img/"},
+        {"text": "Reads convincingly in Bobby's voice: one concrete object threaded throughout, warm and self-deprecating, specific detail (qualitative)"}
+      ]
+    },
+    {
+      "id": 1,
+      "name": "sumo-cultural-thread-text-only",
+      "prompt": "Want a 90-in-90 entry about this morning. Watched the senshuraku, the final day of the Nagoya basho, live at 6am with a coffee. The yokozuna went in undefeated and lost the playoff on the very last bout, to a maegashira nobody'd have bet on. And the thing that got me was he just... bowed. No face. No drama. Stepped back, straightened his mawashi, bowed, walked off. Fifteen days of everything and it ends like that and he bows. Something in there about losing well, about grace when it doesn't go your way. Text only, no image.",
+      "expected_output": "A polished post built around the final bout, weaving the sumo/Japanese thread naturally, no image, truncate marker after the teaser, correct front matter, and a short kicker about grace in defeat that echoes the bow.",
+      "files": [],
+      "assertions": [
+        {"text": "Front matter contains title, authors: [bobby], and hide_table_of_contents: false"},
+        {"text": "Contains exactly one <!-- truncate --> marker, placed after the opening teaser paragraph"},
+        {"text": "Filename follows the blog/YYYY-MM-DD-slug.md convention with a valid date"},
+        {"text": "Body contains no Markdown headings (##) and no bullet or numbered lists"},
+        {"text": "Word count is roughly 300-800 (a 2-3 min read)"},
+        {"text": "Ends on a short standalone kicker line (<= ~12 words) that recasts the theme rather than restating it"},
+        {"text": "Uses two or fewer em-dashes (avoids the AI em-dash tell)"},
+        {"text": "Contains no 'it's not X, it's Y' or 'not just... but' cliche construction"},
+        {"text": "Contains no image markup (post is text only as requested)"},
+        {"text": "Weaves the sumo/Japanese cultural thread naturally rather than as bolted-on decoration (qualitative)"},
+        {"text": "Reads convincingly in Bobby's voice: one moment threaded throughout, dry and warm, specific detail (qualitative)"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "small-moment-hand-grinder-text-only",
+      "prompt": "New post idea. My electric coffee grinder packed in last week so I've been using the old hand grinder every morning, the little cast iron one, and honestly the coffee tastes the same but the mornings don't. Two minutes of just... turning a handle before the day starts, the sound of it, nothing beeping at me. I'd been meaning to buy a new electric one and I keep not doing it. Something about how the slow annoying way turned out to be the bit I didn't know I needed. No links, no image.",
+      "expected_output": "A polished post built around the hand grinder, no external link or image, truncate marker after the teaser, correct front matter, and a short kicker about the slow way that echoes the opening.",
+      "files": [],
+      "assertions": [
+        {"text": "Front matter contains title, authors: [bobby], and hide_table_of_contents: false"},
+        {"text": "Contains exactly one <!-- truncate --> marker, placed after the opening teaser paragraph"},
+        {"text": "Filename follows the blog/YYYY-MM-DD-slug.md convention with a valid date"},
+        {"text": "Body contains no Markdown headings (##) and no bullet or numbered lists"},
+        {"text": "Word count is roughly 300-800 (a 2-3 min read)"},
+        {"text": "Ends on a short standalone kicker line (<= ~12 words) that recasts the theme rather than restating it"},
+        {"text": "Uses two or fewer em-dashes (avoids the AI em-dash tell)"},
+        {"text": "Contains no 'it's not X, it's Y' or 'not just... but' cliche construction"},
+        {"text": "Contains no image markup and no external links (as requested)"},
+        {"text": "Reads convincingly in Bobby's voice: one small object threaded into a quiet resonance, warm and self-deprecating, no forced moral (qualitative)"}
+      ]
+    }
+  ]
+}
