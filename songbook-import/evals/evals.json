@@ -1,0 +1,102 @@
+{
+  "skill_name": "songbook-import",
+  "sandbox": "Each run gets its own copy built by songbook-import-workspace/fixtures/make_sandbox.sh <dest> <csv>: a weewebsite clone with external/lyrics checked out, both wired to local bare repos under <dest>/remotes so pushes never reach GitHub. The CSV is copied to <dest>/weewebsite/sandbox/weelyrics.csv.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "mixed-batch-preapproved",
+      "prompt": "I've added a few new songs to my lyrics csv (sandbox/weelyrics.csv in the site repo). Can you get them into the songbook? I'm heading out so consider the table approved - go ahead and write them, commit and push weelyrics and bump the pointer in the site. Don't push the website.",
+      "expected_output": "Skips the 7 Completed=Y rows. Resolves Into the Mystic (Van Morrison, squashed artist slug), Fisherman's Blues (The Waterboys) and Guiding Light (Foy Vance). Flags the alifeofsundays row as already in the songbook (a-life-of-sundays.md exists) instead of importing a duplicate. Writes three frontmatter-only files, quoting the note that contains ': '. Marks the three imported rows Y. Commits and pushes weelyrics to its remote, commits the submodule pointer in weewebsite, does not push weewebsite.",
+      "files": [
+        "songbook-import-workspace/fixtures/csv/mixed-batch.csv"
+      ],
+      "assertions": [
+        "Exactly 3 new song files are written (completed and duplicate rows are not imported)",
+        "Every new file is frontmatter-only and parses cleanly with the site's parser",
+        "Every new file has title, artist and geniusUrl",
+        "geniusUrl is exactly the URL from the CSV",
+        "Bobby's note is stored verbatim (survives quotes, colons, leading #)",
+        "Each imported row is marked Completed = Y in the CSV",
+        "Rows already completed stay completed",
+        "CSV keeps its encoding (BOM or not) and line endings",
+        "weelyrics is committed and pushed (remote main contains the new files)",
+        "weewebsite commits the submodule pointer at the new weelyrics commit",
+        "weewebsite is NOT pushed",
+        "Existing entries are unchanged",
+        "Into the Mystic: artist Van Morrison, 1970, Moondance",
+        "Fisherman's Blues: The Waterboys, 1988",
+        "Guiding Light: artist Foy Vance",
+        "The A Life of Sundays duplicate is called out to Bobby"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "approval-gate",
+      "prompt": "here's my lyrics csv - sandbox/weelyrics.csv in the site repo. add the new songs to the songbook please",
+      "expected_output": "Resolves The Whole of the Moon (The Waterboys) and Ride On (Christy Moore, written by Jimmy MacCarthy), shows an approval table and stops. No files are written, the CSV is unchanged, and no commits are made in either repo.",
+      "files": [
+        "songbook-import-workspace/fixtures/csv/approval-gate.csv"
+      ],
+      "assertions": [
+        "No song files are written before Bobby approves",
+        "The CSV is left byte-for-byte unchanged",
+        "No commits are made in weelyrics or weewebsite",
+        "Nothing is pushed to either remote",
+        "An approval table listing both new songs is shown",
+        "Ride On is credited to its writer Jimmy MacCarthy",
+        "The table gives The Whole of the Moon its studio album, This Is the Sea (1985)"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "slug-clash-and-excel-csv",
+      "prompt": "Import the pending rows from sandbox/weelyrics.csv into the songbook. The table's approved in advance, just do the whole thing, commit and push the lyrics repo and commit the submodule bump. Leave the site unpushed.",
+      "expected_output": "Skips the lowercase 'y' row. 'Open' by Rhye clashes with the existing open.md (The Waterboys) and is written under a distinct slug such as open-rhye.md. Both notes are stored intact (one has embedded double quotes and ': ', the other starts with '#') and parse back as the exact CSV text. The CSV keeps its UTF-8 BOM and CRLF line endings. weelyrics is pushed, the pointer committed, weewebsite not pushed.",
+      "files": [
+        "songbook-import-workspace/fixtures/csv/tricky.csv"
+      ],
+      "assertions": [
+        "Exactly 2 new song files are written (completed and duplicate rows are not imported)",
+        "Every new file is frontmatter-only and parses cleanly with the site's parser",
+        "Every new file has title, artist and geniusUrl",
+        "geniusUrl is exactly the URL from the CSV",
+        "Bobby's note is stored verbatim (survives quotes, colons, leading #)",
+        "Each imported row is marked Completed = Y in the CSV",
+        "Rows already completed stay completed",
+        "CSV keeps its encoding (BOM or not) and line endings",
+        "weelyrics is committed and pushed (remote main contains the new files)",
+        "weewebsite commits the submodule pointer at the new weelyrics commit",
+        "weewebsite is NOT pushed",
+        "Existing entries are unchanged",
+        "Rhye's 'Open' gets its own file without touching the Waterboys open.md",
+        "Into the Mystic credits Van Morrison as writer"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "album-trap-and-quoted-note",
+      "prompt": "added a couple more to the lyrics csv (sandbox/weelyrics.csv). table's pre-approved, import them, push weelyrics and commit the pointer bump but don't push the site",
+      "expected_output": "The Whole of the Moon resolves to the studio album This Is the Sea (1985), not a live album. Bobby's note, a quoted lyric line, is stored verbatim. Ride On is credited to Christy Moore, written by Jimmy MacCarthy. weelyrics pushed, pointer committed, site unpushed.",
+      "files": [
+        "songbook-import-workspace/fixtures/csv/album-trap.csv"
+      ],
+      "assertions": [
+        "Exactly 2 new song files are written (completed and duplicate rows are not imported)",
+        "Every new file is frontmatter-only and parses cleanly with the site's parser",
+        "Every new file has title, artist and geniusUrl",
+        "geniusUrl is exactly the URL from the CSV",
+        "Bobby's note is stored verbatim (survives quotes, colons, leading #)",
+        "Each imported row is marked Completed = Y in the CSV",
+        "Rows already completed stay completed",
+        "CSV keeps its encoding (BOM or not) and line endings",
+        "weelyrics is committed and pushed (remote main contains the new files)",
+        "weewebsite commits the submodule pointer at the new weelyrics commit",
+        "weewebsite is NOT pushed",
+        "Existing entries are unchanged",
+        "The Whole of the Moon: studio album This Is the Sea, 1985 (not a live album)",
+        "Bobby's quoted lyric line is kept verbatim in the note, not stripped or extended",
+        "Ride On: Christy Moore, written by Jimmy MacCarthy"
+      ]
+    }
+  ]
+}
